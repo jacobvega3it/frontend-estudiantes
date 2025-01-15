@@ -2,16 +2,17 @@
   <div>
     <h1>¡Hola, Bienvenido!</h1>
     <p>Sistema de Administración de Estudiantes</p>
-    <MiComponente />
+    <MiComponente /> <!-- Uso del componente hijo -->
   </div>
 </template>
 
 <script>
-import MiComponente from './components/MiComponente.vue'
+import MiComponente from './components/MiComponente.vue' // Importación del componente hijo
 
 export default {
+  name: 'App', // Opcional, útil para identificar el componente
   components: {
-    MiComponente,
+    MiComponente, //Registro del componente hijo
   },
 }
 </script>
