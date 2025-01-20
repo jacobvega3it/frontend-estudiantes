@@ -7,6 +7,7 @@
             <li v-for="(estudiante, index) in estudiantes" :key="index">
                 <input type="checkbox" v-model="estudiante.activo" />
                 {{ estudiante.nombre }}
+                <button @click="verDetalleEstudiante(index)">Detalle</button>
                 <button @click="eliminarEstudiante(index)">Eliminar</button>
             </li>
         </ul>
@@ -18,8 +19,10 @@
 
 <script>
 import { ref, reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
+    name: 'ListadoEstudiantes',
     setup() {
         const nuevoEstudiante = ref('');
         const estudiantes = reactive([
@@ -27,6 +30,11 @@ export default {
             { nombre: 'Bastian Bustos', activo: false },
             { nombre: 'Carla Carmona', activo: true },
         ]);
+        const router = useRouter();
+
+        const verDetalleEstudiante = (index) => {
+            router.push(`/students/${index}`);
+        };
 
         const agregarEstudiante = () => {
             if (nuevoEstudiante.value.trim() !== '') {
@@ -49,6 +57,7 @@ export default {
             eliminarEstudiante,
             totalEstudiantes,
             estudiantesActivos,
+            verDetalleEstudiante,
         };
     },
 };
