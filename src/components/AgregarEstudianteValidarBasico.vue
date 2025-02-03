@@ -2,26 +2,23 @@
     <div class="home-container">
         <h1>Agregar estudiante</h1>
         <div class="form-container">
-            <Form :validation-schema="schema" @submit="addStudent">
+            <form @submit.prevent="addStudent">
                 <div class="form-field">
                     <label for="name">Nombre:</label>
-                    <Field name="name" placeholder="Ingrese un nombre" />
-                    <ErrorMessage name="name" class="error" />
+                    <input type="text" id="name" v-model="newStudent.name" />
                 </div>
                 <div class="form-field">
                     <label for="surname">Apellido:</label>
-                    <Field name="surname" placeholder="Ingrese un apellido" />
-                    <ErrorMessage name="surname" class="error" />
+                    <input type="text" id="surname" v-model="newStudent.surname" />
                 </div>
                 <div class="form-field">
                     <label for="career">Carrera:</label>
-                    <Field name="careerId" as="select">
+                    <select v-model="newStudent.careerId">
                         <option disabled value="">Selecciona una carrera:</option>
                         <option v-for="career in careers" :key="career.careerId" :value="career.careerId">
                             {{ career.name }}
                         </option>
-                    </Field>
-                    <ErrorMessage name="careerId" class="error" />
+                    </select>
                 </div>
                 <div class="button-container">
                     <button type="submit">Agregar estudiante</button>
@@ -29,7 +26,7 @@
                 <div v-if="message" :class="message.includes('creado') ? 'message-success' : 'message-error'">
                     <p>{{ message }}</p>
                 </div>
-            </Form>
+            </form>
         </div>
     </div>
 </template>
@@ -37,7 +34,6 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import * as yup from 'yup';
 
 export default {
     name: 'AgregarEstudiante',
@@ -45,12 +41,6 @@ export default {
         const careers = ref([]);
 
         const message = ref('');
-
-        const schema = yup.object({
-            name: yup.string().required('El nombre es obligatorio'),
-            surname: yup.string().required('El apellido es obligatorio'),
-            careerId: yup.number().required('La carrera es obligatoria'),
-        });
 
         const newStudent = ref({
             name: "",
@@ -65,15 +55,15 @@ export default {
             },
         };
 
-        const addStudent = (values, { resetForm }) => {
+        const addStudent = () => {
 
-            newStudent.value.careerId = parseInt(values.careerId);
-            newStudent.value.name = values.name;
-            newStudent.value.surname = values.surname;
+            if (!validateForm()) {
+                return;
+            }
 
             const response = axios.post(
                 'http://localhost:8095/api/estudiantes/agregar', 
-                newStudent.value,
+                newStudent.value, 
                 axiosConfig
             );
             console.log("Estudiante creado: ", response.data);
@@ -82,8 +72,26 @@ export default {
                 surname: "",
                 careerId: "",
             };
-            resetForm();
             message.value = "El estudiante ha sido creado";
+        };
+
+        //Función para validar el formulario
+        const validateForm = () => {
+            if (newStudent.value.name === "" || newStudent.value.surname === "" 
+                || newStudent.value.careerId === "") {
+                message.value = "Por favor, completa todos los campos";
+                return false;
+            }
+            if (newStudent.value.name.length < 3 || newStudent.value.name.length > 10) {
+                message.value = "El nombre debe tener entre 3 y 10 caracteres";
+                return false;
+            }
+            if (newStudent.value.surname.length < 2 || newStudent.value.surname.length > 15) {
+                message.value = "El apellido debe tener entre 2 y 15 caracteres";
+                return false;
+            }
+
+            return true;
         };
 
         const fetchCareers = async () => {
@@ -100,7 +108,6 @@ export default {
             careers,
             addStudent,
             message,
-            schema,
         };
     },
 };
@@ -123,7 +130,11 @@ export default {
 .form-field {
     margin-bottom: 15px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+}
+
+.form-container h2 {
+    text-align: center;
 }
 
 .button-container {
@@ -133,12 +144,13 @@ export default {
 }
 
 label {
-    margin-bottom: 5px;
+    margin-right: 15px;
+    min-width: 150px;
 }
 
 input, select {
     padding: 8px;
-    width: 100%;
+    flex-grow: 1;
     box-sizing: border-box;
 }
 
@@ -173,13 +185,6 @@ button:hover {
     text-align: center;
     color: #721c24;
     background-color: #f8d7da;
-}
-
-.error{
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
 }
 
 </style>
