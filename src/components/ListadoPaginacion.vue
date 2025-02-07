@@ -4,6 +4,7 @@
         <div v-if="message" :class="messageType">
             <p v-html="message"></p>
         </div>
+
         <table class="items-table">
             <thead>
                 <tr>
@@ -34,23 +35,21 @@
             <button @click="nextPage" :disabled="currentPage === totalPages">Siguiente</button>
         </div>
 
-        <div v-if="selectedStudent" class="student-detail">
-            <h2>Detalle del Estudiante</h2>
-            <p><strong>ID:</strong> {{ selectedStudent.studentId }}</p>
-            <p><strong>Nombre:</strong> {{ selectedStudent.name }}</p>
-            <p><strong>Apellido:</strong> {{ selectedStudent.surname }}</p>
-            <p><strong>Carrera:</strong> {{ selectedStudent.career.name }}</p>
-            <button class="close-btn" @click="selectedStudent = null">❌ Cerrar Detalle</button>
-        </div>
+        <slot
+            name="detalle"
+            :estudianteSeleccionado="selectedStudent"
+            :cerrar="closeDetail">
+        </slot>
     </div>
 </template>
 
 <script>
+
 import { ref, computed, onMounted } from 'vue';
 import useApiStudents from '@/composables/useApiStudents';
 
 export default {
-    name: 'ListadoConPaginacion',
+    name: 'ListadoPaginacion',
     setup() {
         const { students, fetchStudents, deleteStudent, message, messageType } = useApiStudents();
         const elementsPerPage = 4;
@@ -83,6 +82,10 @@ export default {
             selectedStudent.value = student;
         };
 
+        const closeDetail = () => {
+            selectedStudent.value = null;
+        };
+
         onMounted(async () => {
             await fetchStudents();
         });
@@ -99,10 +102,11 @@ export default {
             deleteStudent,
             messageType,
             selectStudent,
-            selectedStudent
+            selectedStudent,
+            closeDetail
         };
-    },
-};
+    }
+}
 </script>
 
 <style scoped>
@@ -183,33 +187,4 @@ export default {
         background-color: #0056b3;
     }
 
-    .student-detail {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #ddd;
-        background-color: #f9f9f9;
-        width: 50%;
-        margin-left: auto;
-        margin-right: auto;
-        border-radius: 5px;
-    }
-
-    .student-detail h2 {
-        margin-bottom: 10px;
-    }
-
-    .close-btn {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        display: block;
-        margin: 10px auto 0;
-    }
-
-    .close-btn:hover {
-        background-color: #a71d2a;
-    }
 </style>

@@ -2,7 +2,8 @@
     <div>
         <!-- <ListadoEstudiantes /> -->
         <!-- <ListadoSinPaginacion /> -->
-        <ListadoConPaginacion />
+        <!-- <ListadoConPaginacion /> -->
+        <ListadoPaginacionSlot />
     </div>
 </template>
 
@@ -10,14 +11,16 @@
 
 //import ListadoEstudiantes from '../components/ListadoEstudiantes.vue';
 //import ListadoSinPaginacion from '../components/ListadoSinPaginacion.vue';
-import ListadoConPaginacion from '../components/ListadoConPaginacion.vue';
+//import ListadoConPaginacion from '../components/ListadoConPaginacion.vue';
+import ListadoPaginacionSlot from '@/components/ListadoPaginacionSlot.vue';
 
 export default {
     name: 'StudentsListView',
     components: {
         //ListadoEstudiantes,
         //ListadoSinPaginacion,
-        ListadoConPaginacion,
+        //ListadoConPaginacion,
+        ListadoPaginacionSlot,
     },
 };
 

@@ -22,6 +22,7 @@ export default function useApiStudents() {
         } catch (error) {
             console.log("Error al obtener estudiantes: ", error);
             message.value = 'No se pudo obtener la lista de estudiantes';
+            messageType.value = "message-error";
         }
     };
 
