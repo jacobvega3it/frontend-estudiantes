@@ -1,7 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
-  devServer: {
+  /*devServer: {
     proxy: {
       'login': {
         target: 'http://localhost:8095',
@@ -9,5 +9,5 @@ module.exports = defineConfig({
         secure: false,
       }
     }
-  }
+  }*/
 })

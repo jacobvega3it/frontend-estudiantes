@@ -1,0 +1,16 @@
+services: # Define los servicios que se desplegarán en los contenedores.
+  frontend-service: # Nombre del servicio. 
+    #image: tresit-frontend # Imagen de Docker que se utilizará.
+    image: jacobvega3it/tresit-frontend:v1 # Imagen de Docker que se utilizará.
+    container_name: frontend-service # Nombre personalizado para el contenedor
+    volumes:
+      - ./dist:/usr/share/nginx/html  # Esto asegura que el código se cargue como volumen
+      - ./nginx.conf:/etc/nginx/nginx.conf  # Aquí enlazamos el archivo de configuración
+    ports: # Configuración para mapear puertos del contenedor al host.
+      - ${PORT}:8080 # Mapea el puerto 80 del contenedor al puerto 80 del host.
+    networks: # Configuración de redes.
+      - students_network # Nombre de la red a la que se conectará el contenedor.
+ 
+networks: # Define las redes que se utilizarán.
+  students_network: # Nombre de la red.
+    external: true # Indica que la red ya existe y no se creará una nueva.
