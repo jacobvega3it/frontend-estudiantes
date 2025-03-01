@@ -1,7 +1,6 @@
 services: # Define los servicios que se desplegarán en los contenedores.
   frontend-service: # Nombre del servicio. 
-    #image: tresit-frontend # Imagen de Docker que se utilizará.
-    image: jacobvega3it/tresit-frontend:v1 # Imagen de Docker que se utilizará.
+    image: tresit-frontend # Imagen de Docker que se utilizará.
     container_name: frontend-service # Nombre personalizado para el contenedor
     volumes:
       - ./dist:/usr/share/nginx/html  # Esto asegura que el código se cargue como volumen
