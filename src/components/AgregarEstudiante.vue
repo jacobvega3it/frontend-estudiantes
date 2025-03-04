@@ -72,7 +72,8 @@ export default {
             newStudent.value.surname = values.surname;
 
             const response = axios.post(
-                'http://localhost:8095/api/estudiantes/agregar', 
+                //'http://localhost:8095/api/estudiantes/agregar', 
+                'http://k8s-default-gateways-36999c9996-a865143757b14471.elb.us-west-1.amazonaws.com:8095/api/estudiantes/agregar', 
                 newStudent.value,
                 axiosConfig
             );
@@ -87,7 +88,8 @@ export default {
         };
 
         const fetchCareers = async () => {
-            const response = await axios.get('http://localhost:8095/api/carreras', axiosConfig);
+            //const response = await axios.get('http://localhost:8095/api/carreras', axiosConfig);
+            const response = await axios.get('http://k8s-default-gateways-36999c9996-a865143757b14471.elb.us-west-1.amazonaws.com:8095/api/carreras', axiosConfig);
             careers.value = response.data;
         };
 

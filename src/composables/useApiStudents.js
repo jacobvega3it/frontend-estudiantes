@@ -16,7 +16,8 @@ export default function useApiStudents() {
 
     const fetchStudents = async () => {
         try {
-            const response = await axios.get('http://localhost:8095/api/estudiantes', axiosConfig);
+            //const response = await axios.get('http://localhost:8095/api/estudiantes', axiosConfig);
+            const response = await axios.get('http://k8s-default-gateways-36999c9996-a865143757b14471.elb.us-west-1.amazonaws.com:8095/api/estudiantes', axiosConfig);
             students.value = response.data;
             //message.value = '';
         } catch (error) {
@@ -32,7 +33,8 @@ export default function useApiStudents() {
         if (!confirmDelete) return;
 
         try {
-            await axios.delete(`http://localhost:8095/api/estudiantes/eliminar/${studentId}`, axiosConfig);
+            //await axios.delete(`http://localhost:8095/api/estudiantes/eliminar/${studentId}`, axiosConfig);
+            await axios.delete(`http://k8s-default-gateways-36999c9996-a865143757b14471.elb.us-west-1.amazonaws.com:8095/api/estudiantes/eliminar/${studentId}`, axiosConfig);
             message.value = "Estudiante eliminado correctamente.";
             messageType.value = "message-success";
             console.log("Estudiante eliminado correctamente.");

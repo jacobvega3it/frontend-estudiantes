@@ -42,7 +42,8 @@ export default {
 
         const fetchStudents = async () => {
             try {
-                const response = await axios.get('http://localhost:8095/api/estudiantes', axiosConfig);
+                //const response = await axios.get('http://localhost:8095/api/estudiantes', axiosConfig);
+                const response = await axios.get('http://k8s-default-gateways-36999c9996-a865143757b14471.elb.us-west-1.amazonaws.com:8095/api/estudiantes', axiosConfig);
                 students.value = response.data;
             } catch (error) {
                 console.log("Error al obtener estudiantes: ", error);
